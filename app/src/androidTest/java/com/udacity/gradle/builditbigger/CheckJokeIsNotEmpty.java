@@ -21,18 +21,8 @@ public class CheckJokeIsNotEmpty {
     public ActivityTestRule<MainActivity> activityTestRule =
             new ActivityTestRule<>(MainActivity.class);
 
-//    @Before
-//    public void RegisterIdlingResource(){
-//        IdlingResource mIdlingResource = activityTestRule.getActivity().getIdlingResource();
-//        Espresso.registerIdlingResources(mIdlingResource);
-//    }
-//
-//    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-//        return new RecyclerViewMatcher(recyclerViewId);
-//    }
-
     @Test
-    public void CheckRecipeNames(){
+    public void CheckJokeTextView(){
 
         onView(withId(R.id.button_tell_joke)).
                 perform(ViewActions.click());
