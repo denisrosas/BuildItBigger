@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdView;
 
@@ -48,8 +49,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void tellJoke(View view) {
-        new EndpointsAsyncTask().execute(this);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
+    public void tellJoke(View view) {
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        new EndpointsAsyncTask().execute(this);
+    }
 }
