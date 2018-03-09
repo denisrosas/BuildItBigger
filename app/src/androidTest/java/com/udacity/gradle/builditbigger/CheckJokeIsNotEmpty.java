@@ -27,7 +27,7 @@ public class CheckJokeIsNotEmpty {
         onView(withId(R.id.button_tell_joke)).
                 perform(ViewActions.click());
 
-        //check if a joke was received
+        //check if the TextView has a Joke
         onView(withId(R.id.textview_joke)).check(matches(not(withText(""))));
 
     }

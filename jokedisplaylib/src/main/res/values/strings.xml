@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">JokeDisplayLib</string>
     <string name="title_activity_joke_display">JokeDisplayActivity</string>
+    <string name="joke_description">Image of 3 minions laughing at the joke</string>
 </resources>
