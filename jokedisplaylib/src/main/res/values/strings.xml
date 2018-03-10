@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">JokeDisplayLib</string>
     <string name="title_activity_joke_display">JokeDisplayActivity</string>
-    <string name="joke_description">Image of 3 minions laughing at the joke</string>
+    <string name="banner_ad_unit_id2">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="joke_description">Image of minions laughing at the joke.</string>
 </resources>
