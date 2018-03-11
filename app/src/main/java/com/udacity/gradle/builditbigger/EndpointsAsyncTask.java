@@ -1,14 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.example.android.jokedisplaylib.JokeDisplayActivity;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -21,20 +14,25 @@ import java.io.IOException;
  * Created by Denis on 04/03/2018.
  */
 
-public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
-    private static final String JOKE_TEXT = "JOKE_TEXT";
     private static MyApi myApiService = null;
-    private Context mContext;
+    private OnTaskCompleted mOnTaskCompleted;
+
+    public interface OnTaskCompleted {
+        void onTaskCompleted(String response);
+    }
+
+    EndpointsAsyncTask(OnTaskCompleted onTaskCompleted){
+        mOnTaskCompleted = onTaskCompleted;
+    }
 
     @Override
-    protected String doInBackground(Context... contexts) {
+    protected String doInBackground(Void... voids) {
 
         // options for running against local devappserver
         // - 10.0.2.2 is localhost's IP address in Android emulator
         // - turn off compression when running against local devappserver
-
-        mContext = contexts[0];
 
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
@@ -58,20 +56,7 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute(String jokeToDisplay) {
-
-        //if the joke string starts with failed to connect, then the connnection with server was unsuccessful
-        if(jokeToDisplay.toLowerCase().startsWith("failed to connect")) {
-            Toast.makeText(mContext, mContext.getString(R.string.server_unreachable), Toast.LENGTH_LONG).show();
-
-            //hide the Progress Bar
-            View rootView = ((Activity) mContext).getWindow().getDecorView().findViewById(android.R.id.content);
-            ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.INVISIBLE);
-        } else {
-            super.onPostExecute(jokeToDisplay);
-            Intent intent = new Intent(mContext, JokeDisplayActivity.class);
-            intent.putExtra(JOKE_TEXT, jokeToDisplay);
-            mContext.startActivity(intent);
-        }
+        super.onPostExecute(jokeToDisplay);
+        mOnTaskCompleted.onTaskCompleted(jokeToDisplay);
     }
 }

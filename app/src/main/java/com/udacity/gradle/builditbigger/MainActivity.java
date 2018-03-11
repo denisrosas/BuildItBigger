@@ -1,16 +1,20 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.android.jokedisplaylib.JokeDisplayActivity;
 import com.google.android.gms.ads.AdView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.OnTaskCompleted {
+
+    private static final String JOKE_TEXT = "JOKE_TEXT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
-        new EndpointsAsyncTask().execute(this);
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        new EndpointsAsyncTask(MainActivity.this).execute();
+    }
+
+    @Override
+    public void onTaskCompleted(String jokeToDisplay) {
+
+        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+
+        //if the joke string starts with failed to connect, then the connnection with server was unsuccessful
+        if(jokeToDisplay.toLowerCase().startsWith("failed to connect")) {
+            Toast.makeText(this, getString(R.string.server_unreachable), Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, JokeDisplayActivity.class);
+            intent.putExtra(JOKE_TEXT, jokeToDisplay);
+            startActivity(intent);
+        }
     }
 }
