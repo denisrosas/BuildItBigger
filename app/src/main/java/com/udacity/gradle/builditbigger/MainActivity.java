@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.jokedisplaylib.JokeDisplayActivity;
-import com.google.android.gms.ads.AdView;
 
 
 public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.OnTaskCompleted {
@@ -20,15 +19,6 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        AdView adView = findViewById(R.id.adView);
-
-        // show adView ONLY for free version
-        if (BuildConfig.FLAVOR=="paid") {
-            adView.setVisibility(View.GONE);
-        } else {
-            adView.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
